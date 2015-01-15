@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<workspace_user>
+	<active_project>
+		<label>Alacrity</label>
+	</active_project>
+	<projects>
+		<project>
+			<label>Alacrity</label>
+			<showfiles>false</showfiles>
+			<folderitem>
+				<path>classes</path>
+			</folderitem>
+			<folderitem>
+				<path>src</path>
+			</folderitem>
+			<fileitem>
+				<path>src\Alacrity.java</path>
+				<collapsedfolds>691;255;250</collapsedfolds>
+			</fileitem>
+			<fileitem>
+				<path>src\Fleet.java</path>
+				<collapsedfolds>46</collapsedfolds>
+			</fileitem>
+			<fileitem>
+				<path>src\Ship.java</path>
+				<collapsedfolds>0</collapsedfolds>
+			</fileitem>
+		</project>
+	</projects>
+	<open_files>
+		<docitem>
+			<path>src\Alacrity.java</path>
+			<source>true</source>
+			<index>0</index>
+			<active>true</active>
+		</docitem>
+		<docitem>
+			<path>src\Ship.java</path>
+			<source>true</source>
+			<index>1</index>
+			<active>false</active>
+		</docitem>
+		<docitem>
+			<path>src\Fleet.java</path>
+			<source>true</source>
+			<index>2</index>
+			<active>false</active>
+		</docitem>
+		<docitem>
+			<path>src\ShipType.java</path>
+			<source>true</source>
+			<index>3</index>
+			<active>false</active>
+		</docitem>
+	</open_files>
+</workspace_user>

@@ -1,0 +1,10 @@
+
+public enum ShipType 
+{
+	FRIGATE,
+	CRUISER,
+	DESTROYER,
+	BATTLECRUISER,
+	BATTLESHIP,
+	DREADNAUGHT
+}

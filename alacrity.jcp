@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<project>
+	<settings>
+		<label>Alacrity</label>
+		<root_path>\</root_path>
+		<output_path>classes\</output_path>
+		<source_path>src\</source_path>
+		<jdkprofile_ref>JDK version 1.6.0_07</jdkprofile_ref>
+		<compiler_ref/>
+		<ant_ref/>
+	</settings>
+	<ant_events/>
+	<run_items/>
+	<runtimes>
+		<runtime>
+			<label>&lt;Default&gt;</label>
+			<application_ref/>
+			<applet_ref/>
+			<debugger_ref/>
+			<param/>
+			<run>classes\alacrity.htm</run>
+			<verify>true</verify>
+		</runtime>
+	</runtimes>
+	<libraries/>
+	<files>
+		<include>
+			<folderitem>
+				<path>classes</path>
+			</folderitem>
+			<folderitem>
+				<path>src</path>
+			</folderitem>
+			<fileitem>
+				<path>classes\alacrity.htm</path>
+				<folder>classes</folder>
+				<url>classes\alacrity.htm</url>
+				<browser>true</browser>
+			</fileitem>
+			<fileitem>
+				<path>src\Alacrity.java</path>
+				<folder>src</folder>
+			</fileitem>
+			<fileitem>
+				<path>src\Fleet.java</path>
+				<folder>src</folder>
+			</fileitem>
+			<fileitem>
+				<path>src\Ship.java</path>
+				<folder>src</folder>
+			</fileitem>
+			<fileitem>
+				<path>src\ShipType.java</path>
+				<folder>src</folder>
+			</fileitem>
+		</include>
+	</files>
+	<tasks>
+		<todotaskitem>
+			<description>TODO</description>
+			<filepath>src\Alacrity.java</filepath>
+			<line>10</line>
+			<timestamp>1414696280</timestamp>
+		</todotaskitem>
+	</tasks>
+</project>

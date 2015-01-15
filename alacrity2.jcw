@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<workspace>
+	<settings>
+		<label>alacrity</label>
+	</settings>
+	<users>
+		<user>
+			<path>alacrity2.jcu</path>
+		</user>
+	</users>
+	<projects>
+		<project>
+			<path>alacrity.jcp</path>
+		</project>
+	</projects>
+</workspace>
