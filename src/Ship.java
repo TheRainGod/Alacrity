@@ -1,14 +1,15 @@
 import java.util.*;
 //import java.io.*;
 import java.awt.*;
-//import java.awt.Graphics2D.*;
+import java.awt.Graphics2D.*;
+import java.awt.geom.Path2D;
 //import java.awt.geom.*;
 
 
 public class Ship {
 
 	//ints
-	public int x, y, ox, oy, w, h;
+	public double x, y, ox, oy, w, h;
 	public int sightRange;
 	public int fireRange = 75;
 	public double dx, dy;
@@ -25,26 +26,27 @@ public class Ship {
 	public boolean auriSpotted = false;
 
 	//shipCoordinates
-	public int[] x1;
-	public int[] y1;
-	public int[] temp_x;
-	public int[] temp_y;
+	public double[] x1;
+	public double[] y1;
+	public double[] temp_x;
+	public double[] temp_y;
 	public double[] x2;
 	public double[] y2;
-	public int xx2[];
-	public int yy2[];
-	public int[] xcoord = new int[4];
-   	public int[] ycoord = new int[4];
-	public ArrayList<Integer>x3;
-	public ArrayList<Integer>y3;
-	public ArrayList<Integer>x4;
-	public ArrayList<Integer>y4;
+	public double xx2[];
+	public double yy2[];
+	public double[] xcoord = new double[4];
+   	public double[] ycoord = new double[4];
+	public ArrayList<Double>x3;
+	public ArrayList<Double>y3;
+	public ArrayList<Double>x4;
+	public ArrayList<Double>y4;
 	public Point p1,p2,p3,p0;
 	public double shipAngle;
 	public int s;
 
 	//polygons
 	public Polygon shipShape;
+	public Path2D shipShapeDouble = new Path2D.Double();
 
 	//strings
 	public ShipType shipType;
@@ -98,7 +100,7 @@ public class Ship {
     	colorBlue = yes;
     }
 
-	public Ship(int a, int b, int c, int d, ShipType t, String name1, boolean yes)   //width and then height BOTH NEED TO BE DIVISIBLE BY 2
+	public Ship(double a, double b, double c, double d, ShipType t, String name1, boolean yes)   //width and then height BOTH NEED TO BE DIVISIBLE BY 2
     {
     	x = a;
     	y = b;
@@ -111,38 +113,41 @@ public class Ship {
     	//fill arrays with ships 4 points
     	//int[] x1 = new int[4];
     	//int[] y1 = new int[4];
-    	int[] x1 = {x, x+(w/2), x, x-(w/2)};
-    	int[] y1 = {y-(h/2), y, y+(h/2), y};
+    	double[] x1 = {x, x+(w/2), x, x-(w/2)};
+    	double[] y1 = {y-(h/2), y, y+(h/2), y};
 
-    	int[] xx2 = {0+ox, w/2+ox, 0+ox, 0-(w/2)+ox};
-    	int[] yy2 = {0-(h/2)+oy, 0+oy, h/2+oy, 0+oy};
+    	double[] xx2 = {0+ox, w/2+ox, 0+ox, 0-(w/2)+ox};
+    	double[] yy2 = {0-(h/2)+oy, 0+oy, h/2+oy, 0+oy};
 
-        p0 = new Point(x1[0],y1[0]);
-        p1 = new Point(x1[1],y1[1]);
-        p2 = new Point(x1[2],y1[2]);
-        p3 = new Point(x1[3],y1[3]);
+       // p0 = new Point(x1[0],y1[0]);
+       // p1 = new Point(x1[1],y1[1]);
+       // p2 = new Point(x1[2],y1[2]);
+       // p3 = new Point(x1[3],y1[3]);
 
-		x3 = new ArrayList<Integer>();
-		y3 = new ArrayList<Integer>();
-		x3.add(0,0);
-		x3.add(1,(w/2));
-		x3.add(2,0);
+		x3 = new ArrayList<Double>();
+		y3 = new ArrayList<Double>();
+		x3.add(0,0.0);
+		x3.add(1,(w/2.0));
+		x3.add(2,0.0);
 		x3.add(3,(0-(w/2)));
 		y3.add(0,0-(h/2));
-		y3.add(1,0);
+		y3.add(1,0.0);
 		y3.add(2,h/2);
-		y3.add(3,0);
+		y3.add(3,0.0);
 
-		x4 = new ArrayList<Integer>(); x4.add(0); x4.add(0); x4.add(0);x4.add(0);
+		x4 = new ArrayList<Double>(); x4.add(0.0); x4.add(0.0); x4.add(0.0);x4.add(0.0);
 		//Collections.copy(x4, x3);
-		y4 = new ArrayList<Integer>(4); y4.add(0); y4.add(0); y4.add(0);y4.add(0);
+		y4 = new ArrayList<Double>(4); y4.add(0.0); y4.add(0.0); y4.add(0.0);y4.add(0.0);
 		//Collections.copy(y4, y3);
 
     	///double[] x2 = {x, x+(w/2), x, x-(w/2)};
     	//double[] y2 = {y, y+(h/2), y+h, y+(h/2)};
     	s = 4;
-
-    	shipShape = new Polygon(xx2,yy2,s);
+    	
+    	
+    	createPolygon();
+    	
+    	//shipShape = new Polygon(xx2,yy2,s);
 		
 		sightRange = 150;
 	
@@ -154,6 +159,15 @@ public class Ship {
     	
     	findFireRange(shipType);
     }
+	
+	public void createPolygon()
+	{
+		shipShapeDouble.moveTo(x3.get(0), y3.get(0));
+    	shipShapeDouble.lineTo(x3.get(1), y3.get(1));
+    	shipShapeDouble.lineTo(x3.get(2), y3.get(2));
+    	shipShapeDouble.lineTo(x3.get(3), y3.get(3));
+    	shipShapeDouble.closePath();
+	}
 	
 	public int getWidth()
 	{
@@ -209,46 +223,6 @@ public class Ship {
     	return "[Ship Type: " + shipType + " :: Ship Name: " + shipName + "]";
     }
     
-    public int[] addCenterX(int[] t)
-    {
-    	int[] cage = new int[10];
-
-    	for(int i=0; i<4;i++)
-    	{
-    		cage[i] = t[i] + ox;
-
-    	}
-
-    	return cage;
-
-    }
-
-    public int[] addCenterY(int[] t)
-    {
-    	int[] cage = new int[10];
-
-    	for(int i=0; i<4;i++)
-    	{
-    		cage[i] = t[i] + oy;
-
-    	}
-
-    	return cage;
-
-    }
-
-    public int getX1(int i)
-    {
-    	System.out.println(x1[i]);
-    	return x1[i];
-    }
-
-    public int getY1(int i)
-    {
-
-    	return y1[i];
-    }
-
     public Polygon getShipShape()
     {
 
@@ -271,8 +245,8 @@ public class Ship {
     public void makeCoords(int eX, int eY, int fcX, int fcY) //rotates
    	{
     	 int  i;
-    	 int delta_x = eX-ox;
-    	 int delta_y = oy-eY;
+    	 double delta_x = eX-ox;
+    	 double delta_y = oy-eY;
     	 double angle = Math.atan2(delta_y, delta_x);
 
     	 if(shipAngle==angle)
@@ -292,15 +266,26 @@ public class Ship {
    			 {
    			 	temp_x2 =(((x3.get(i)+0.0)*Math.sin(angle)-(y3.get(i)+0.0)*Math.cos(angle)));
    			 	temp_y2 =(((x3.get(i)+0.0)*Math.cos(angle)+(y3.get(i)+0.0)*Math.sin(angle)));
-       			 xcoord[i] = (int)temp_x2 + ox;
-       			 ycoord[i] = (int)temp_y2 + oy;
+       			 xcoord[i] = temp_x2 + ox;
+       			 ycoord[i] = temp_y2 + oy;
        			 //x3.add(i,(int)(x+(x3.get(i)*Math.sin(angle)-y3.get(i)*Math.cos(angle))));
        			 //y3.add(i,(int)(y+(x3.get(i)*Math.cos(angle)+y3.get(i)*Math.sin(angle))));
     		 }
     		 
-    	shipShape = new Polygon(xcoord, ycoord, s);
+    	//shipShape = new Polygon(xcoord, ycoord, s);
+    		createPolygon2(xcoord, ycoord);
     	 }
  	 }
+    
+    public void createPolygon2(double[] XX, double[] YY)
+    {	
+    	shipShapeDouble.moveTo(XX[0], YY[0]);
+    	for(int i = 1; i<4; i++)
+    	{
+    		shipShapeDouble.lineTo(XX[i], YY[i]);
+    		
+    	}
+    }
 
  	public void move(int eX1, int eY1, int fcX1, int fcY1) //moves 
  	{
@@ -309,8 +294,8 @@ public class Ship {
  		boolean trick = false;
  		//System.out.println("Y COORD: " + (eY1+0.0-fcY1));
  		//System.out.println("X COORD: " + (eX1+0.0-fcX1));
- 		temp_x = new int[4];
- 		temp_y = new int[4];
+ 		temp_x = new double[4];
+ 		temp_y = new double[4];
  		dx=1.0;
  		dy=1.0;
 
@@ -358,14 +343,14 @@ public class Ship {
  				//System.out.println("SlopeDub " + slopeDub)
  				if(eY1+0.0-fcY1>0)
  				{
- 					temp_y[i] =(int) (y3.get(i) + oy + dy);
- 					oy = (int)(oy+dy);
+ 					temp_y[i] = (y3.get(i) + oy + dy);
+ 					oy = (oy+dy);
  					//System.out.println("+dy");
  				}
  				else
  				{
- 					temp_y[i] =(int) (y3.get(i) + oy - dy);
- 					oy= (int)(oy-dy);
+ 					temp_y[i] = (y3.get(i) + oy - dy);
+ 					oy= (oy-dy);
  					//System.out.println("-dy");
  				}
  			}
@@ -374,57 +359,57 @@ public class Ship {
 	 				if(eX1-fcX1 == 0)
 	 				{
 	 					if(eY1-fcY1>0)
-	 						temp_y[i] =(int) (y3.get(i)+ oy + dy);
+	 						temp_y[i] = (y3.get(i)+ oy + dy);
 	 					else
-	 						temp_y[i] =(int) (y3.get(i) + oy - dy);
+	 						temp_y[i] = (y3.get(i) + oy - dy);
 	 				}
 
 	 				if(eY1-fcY1==0)
 	 				{
 	 					if(eX1-fcX1>0)
-	 						temp_x[i] = (int) (x3.get(i) + ox + dx);
+	 						temp_x[i] = (x3.get(i) + ox + dx);
 	 					else
-	 						temp_x[i] = (int) (x3.get(i) + ox - dx);
+	 						temp_x[i] = (x3.get(i) + ox - dx);
 	 				}
 
 	 				else
 	 				{
 	 					if(eX1-fcX1>0)
-		 					temp_x[i] = (int) (x3.get(i)+ox+dx);
+		 					temp_x[i] = (x3.get(i)+ox+dx);
 
 		 				else
-		 					temp_x[i] = (int) (x3.get(i)+ox-dx);
+		 					temp_x[i] = (x3.get(i)+ox-dx);
 
-		 				temp_y[i] = (int) (y3.get(i)+oy + ((slope * (temp_x[i]+0.0 - ox))) );
+		 				temp_y[i] = (y3.get(i)+oy + ((slope * (temp_x[i]+0.0 - ox))) );
 	 				}
 
  					if(eX1-fcX1==0)
  					{
  						if(eY1-fcY1>0)
- 							oy = (int) (oy + dy);
+ 							oy = (oy + dy);
  						else
- 							oy = (int) (oy - dy);
+ 							oy = (oy - dy);
  					}
  					else
  					{
 
  						if(eX1-fcX1>0)
  						{
- 							ox=(int) (ox + dx);
- 							oy = (int)Math.round(oy + ((slope) * (dx+0.0)));
+ 							ox = (ox + dx);
+ 							oy = Math.round(oy + ((slope) * (dx+0.0)));
  						}
  						else
  						{
- 							ox = (int) (ox - dx);
- 							oy = (int)Math.round(oy + ((slope) * (0.0-dx)));
+ 							ox = (ox - dx);
+ 							oy = Math.round(oy + ((slope) * (0.0-dx)));
  						}
  					}
  			}
  		}
  		trick = false;
 
- 		shipShape = new Polygon(temp_x, temp_y,s);
-
+ 		//shipShape = new Polygon(temp_x, temp_y,s);
+ 		createPolygon2(temp_x, temp_y);
  	}
 
  	public void move2(int eX1, int eY1, int fcX1, int fcY1)
@@ -435,18 +420,19 @@ public class Ship {
  		double angle = Math.atan2(delta_y, delta_x);
  		
  		shipAngle = angle;
- 		temp_x = new int[4];
- 		temp_y = new int[4];
+ 		temp_x = new double[4];
+ 		temp_y = new double[4];
  		
  		for(int i = 0; i<4; i++)
  		{
- 			temp_x[i] = (int) ((x3.get(i) + ox) + (Math.cos((shipAngle) * dz)));
- 			temp_y[i] = (int) ((y3.get(i)+oy) + (Math.sin((shipAngle) * dz)));
+ 			temp_x[i] = ((x3.get(i) + ox) + (Math.cos((shipAngle) * dz)));
+ 			temp_y[i] = ((y3.get(i)+oy) + (Math.sin((shipAngle) * dz)));
  			ox = (int) (ox + (Math.cos((shipAngle) * dz)));
  			oy = (int) (oy + (Math.sin((shipAngle) * dz)));
  		}
  		
- 		shipShape = new Polygon(temp_x, temp_y,s);
+ 		//shipShape = new Polygon(temp_x, temp_y,s);
+ 		createPolygon2(temp_x, temp_y);
  	}
  
  //auri's methods	
@@ -464,19 +450,20 @@ public class Ship {
 
    			 	temp_x2 =(((x3.get(i)+0.0)*Math.sin(angle)-(y3.get(i)+0.0)*Math.cos(angle)));
    			 	temp_y2 =(((x3.get(i)+0.0)*Math.cos(angle)+(y3.get(i)+0.0)*Math.sin(angle)));
-       			 xcoord[i] = (int)temp_x2 + ox;
-       			 ycoord[i] = (int)temp_y2 + oy;
+       			 xcoord[i] = temp_x2 + ox;
+       			 ycoord[i] = temp_y2 + oy;
        			 //x3.add(i,(int)(x+(x3.get(i)*Math.sin(angle)-y3.get(i)*Math.cos(angle))));
        			 //y3.add(i,(int)(y+(x3.get(i)*Math.cos(angle)+y3.get(i)*Math.sin(angle))));
     		 }
 
-    	shipShape = new Polygon(xcoord, ycoord, s);
+    	//shipShape = new Polygon(xcoord, ycoord, s);
+    		 createPolygon2(xcoord, ycoord);
  	}
  	
  	public void auriFrigateScoutMove() //moves auri's Frigates in a scouting formation
  	{
- 		temp_x = new int[4];
- 		temp_y = new int[4];
+ 		temp_x = new double[4];
+ 		temp_y = new double[4];
  		dx=1.0;
  		dy=1.0;
  		
@@ -491,18 +478,19 @@ public class Ship {
  			
  		for(int i = 0; i<4; i++)
  		{
- 			temp_x[i] = (int) ((x3.get(i) + ox) + (dx * scaleX));
- 			temp_y[i] = (int) ((y3.get(i)+oy) + (dy * scaleY));
- 			ox = (int) (ox + (dx * scaleX));
- 			oy = (int) (oy + (dy * scaleY));
+ 			temp_x[i] = ((x3.get(i) + ox) + (dx * scaleX));
+ 			temp_y[i] = ((y3.get(i)+oy) + (dy * scaleY));
+ 			ox = (ox + (dx * scaleX));
+ 			oy = (oy + (dy * scaleY));
  		}
- 		shipShape = new Polygon(temp_x, temp_y,s);
+ 		//shipShape = new Polygon(temp_x, temp_y,s);
+ 		createPolygon2(temp_x, temp_y);
  	}
  	
  	public void auriFrigateScoutMove2() //moves auri's Frigates in a scouting formation
  	{
- 		temp_x = new int[4];
- 		temp_y = new int[4];
+ 		temp_x = new double[4];
+ 		temp_y = new double[4];
  		dx=1.0;
  		dy=1.0;
  		
@@ -514,28 +502,30 @@ public class Ship {
  		
  		for(int i = 0; i<4; i++)
  		{
- 			temp_x[i] = (int) ((x3.get(i) + ox) + (dx * scaleX));
- 			temp_y[i] = (int) ((y3.get(i)+oy) + (dy * scaleY / scaleX));
- 			ox = (int) (ox + (dx));
- 			oy = (int) (oy + (dy * scaleY / scaleX));
+ 			temp_x[i] = ((x3.get(i) + ox) + (dx * scaleX));
+ 			temp_y[i] = ((y3.get(i)+oy) + (dy * scaleY / scaleX));
+ 			ox = (ox + (dx));
+ 			oy = (oy + (dy * scaleY / scaleX));
  		}
- 		shipShape = new Polygon(temp_x, temp_y,s);
+ 		//shipShape = new Polygon(temp_x, temp_y,s);
+ 		createPolygon2(temp_x, temp_y);
  	}
  	
  	public void auriFrigateScout()
  	{	
- 		temp_x = new int[4];
- 		temp_y = new int[4];
+ 		temp_x = new double[4];
+ 		temp_y = new double[4];
  		
  		for(int i = 0; i<4; i++)
  		{
- 			temp_x[i] = (int) ((x3.get(i) + ox) + (Math.cos(Math.toRadians(auriAngle) * dz)));
- 			temp_y[i] = (int) ((y3.get(i)+oy) + (Math.sin(Math.toRadians(auriAngle) * dz)));
- 			ox = (int) (ox + (Math.cos(Math.toRadians(auriAngle) * dz)));
- 			oy = (int) (oy + (Math.sin(Math.toRadians(auriAngle) * dz)));
+ 			temp_x[i] = ((x3.get(i) + ox) + (Math.cos(Math.toRadians(auriAngle) * dz)));
+ 			temp_y[i] =  ((y3.get(i)+oy) + (Math.sin(Math.toRadians(auriAngle) * dz)));
+ 			ox = (ox + (Math.cos(Math.toRadians(auriAngle) * dz)));
+ 			oy = (oy + (Math.sin(Math.toRadians(auriAngle) * dz)));
  		}
  		
- 		shipShape = new Polygon(temp_x, temp_y,s);
+ 		//shipShape = new Polygon(temp_x, temp_y,s);
+ 		createPolygon2(temp_x, temp_y);
  	}
     // y = oy + ((eY - oy)/(eX - ox))*(x - ox)  line equation
 }
