@@ -31,7 +31,8 @@ public class Alacrity extends Applet implements Runnable, MouseListener, MouseMo
 	Graphics bufferGraphics2;
  	Image offscreen;
  	Image backGround;
-
+ 	
+ 	//pubic ints
 	public int x,y;
 	public static int dx;
 	public static int dy;
