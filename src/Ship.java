@@ -2,7 +2,7 @@ import java.util.*;
 //import java.io.*;
 import java.awt.*;
 import java.awt.Graphics2D.*;
-import java.awt.geom.Path2D;
+import java.awt.geom.*;;
 //import java.awt.geom.*;
 
 
@@ -45,7 +45,7 @@ public class Ship {
 	public int s;
 
 	//polygons
-	public Polygon shipShape;
+	//public Polygon shipShape;
 	public Path2D shipShapeDouble = new Path2D.Double();
 
 	//strings
@@ -84,7 +84,7 @@ public class Ship {
 		x = centerX;
 		y = centerY;
 
-		shipShape = new Polygon();
+		//shipShape = new Polygon();
 		shipType = ShipType.FRIGATE;
 		shipName = "FC1";
 		colorBlue = false;
@@ -161,7 +161,7 @@ public class Ship {
     }
 	
 	public void createPolygon()
-	{
+	{	shipShapeDouble.reset();
 		shipShapeDouble.moveTo(x3.get(0), y3.get(0));
     	shipShapeDouble.lineTo(x3.get(1), y3.get(1));
     	shipShapeDouble.lineTo(x3.get(2), y3.get(2));
@@ -226,7 +226,7 @@ public class Ship {
     public Polygon getShipShape()
     {
 
-    	return shipShape;
+    	return new Polygon(); //shipShape;
     }
     
     public boolean inRange(Ship beta)
@@ -278,7 +278,7 @@ public class Ship {
  	 }
     
     public void createPolygon2(double[] XX, double[] YY)
-    {	
+    {	shipShapeDouble.reset();
     	shipShapeDouble.moveTo(XX[0], YY[0]);
     	for(int i = 1; i<4; i++)
     	{

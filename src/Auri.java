@@ -203,9 +203,9 @@ public class Auri implements Runnable //Ai superclass
 	{	
 		if(!(distanceToTarget(auriFleets.get(1))<=50))
 		{
-			ships.makeCoords(eX, eY, ships.ox, ships.oy);
-			ships.move(eX, eY, ships.ox, ships.oy);
-			ships.makeCoords(eX, eY, ships.ox, ships.oy);
+			//ships.makeCoords(eX, eY, ships.ox, ships.oy);
+			//ships.move(eX, eY, ships.ox, ships.oy);
+			//ships.makeCoords(eX, eY, ships.ox, ships.oy);
 		}
 	}
 	
@@ -213,9 +213,9 @@ public class Auri implements Runnable //Ai superclass
 	{
 		if(distanceFromShipToTarget(ships, eX, eY)>=30)
 		{
-			ships.makeCoords(eX, eY, ships.ox, ships.oy);
-			ships.move(eX, eY, ships.ox, ships.oy);
-			ships.makeCoords(eX, eY, ships.ox, ships.oy);
+			//ships.makeCoords(eX, eY, ships.ox, ships.oy);
+			//ships.move(eX, eY, ships.ox, ships.oy);
+			//ships.makeCoords(eX, eY, ships.ox, ships.oy);
 		}
 	}
 	
@@ -309,7 +309,7 @@ public class Auri implements Runnable //Ai superclass
 			}
 			else if(auriFleets.get(1).get(u).isSpotted && auriFleets.get(1).get(u).numInRange(auriFleets.get(1).get(u).spottedShip) >=140)
 			{
-				moveIndividualShip(auriFleets.get(1).get(u), auriFleets.get(1).get(u).spottedShip.ox, auriFleets.get(1).get(u).spottedShip.oy);
+				//moveIndividualShip(auriFleets.get(1).get(u), auriFleets.get(1).get(u).spottedShip.ox, auriFleets.get(1).get(u).spottedShip.oy);
 			}
 			else if(auriFleets.get(1).get(u).isSpotted && auriFleets.get(1).get(u).numInRange(auriFleets.get(1).get(u).spottedShip) <130)
 			{
@@ -366,10 +366,10 @@ public class Auri implements Runnable //Ai superclass
 	{
 		for(int u = 0; u<auriFleets.get(1).size(); u++)
 		{
-			if(auriFleets.get(1).get(u).isSpotted && distanceToTargetFromFleet(auriFleets.get(1), auriFleets.get(1).get(u).spottedShip.ox, auriFleets.get(1).get(u).spottedShip.oy) < distanceToTargetFromFleet(auriFleets.get(1), eX1, eY1) )
+			//if(auriFleets.get(1).get(u).isSpotted && distanceToTargetFromFleet(auriFleets.get(1), auriFleets.get(1).get(u).spottedShip.ox, auriFleets.get(1).get(u).spottedShip.oy) < distanceToTargetFromFleet(auriFleets.get(1), eX1, eY1) )
 			{
-				eX1 = auriFleets.get(1).get(u).spottedShip.ox;
-				eY1 = auriFleets.get(1).get(u).spottedShip.oy;
+				//eX1 = auriFleets.get(1).get(u).spottedShip.ox;
+				//eY1 = auriFleets.get(1).get(u).spottedShip.oy;
 			}
 		}
 	}
@@ -416,12 +416,12 @@ public class Auri implements Runnable //Ai superclass
 		}
 		else if(ships.auriAngle<=tx || ships.auriAngle>=360 - tx)
 		{
-			bagX = ships.ox;
+			//bagX = ships.ox;
 			bagY = 2000;
 		}
 		else if(ships.auriAngle<=180+tx || ships.auriAngle>=180-tx)
 		{
-			bagX = ships.ox;
+			//bagX = ships.ox;
 			bagY = 0-2000;
 		}
 	}

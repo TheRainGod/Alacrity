@@ -1,10 +1,10 @@
 
 import java.util.*;
-//import java.io.*;
-
 import java.awt.*;
 import java.applet.*;
 import java.awt.event.*;
+import java.awt.geom.Path2D;
+import java.awt.image.BufferedImage;
 
 /*TODO
  * 
@@ -29,8 +29,11 @@ public class Alacrity extends Applet implements Runnable, MouseListener, MouseMo
 	private static final long serialVersionUID = 1L;
 	Graphics bufferGraphics;
 	Graphics bufferGraphics2;
+	Graphics2D g2;
+	Graphics g;
  	Image offscreen;
  	Image backGround;
+ 	BufferedImage offScreen2;
  	
  	//pubic ints
 	public int x,y;
@@ -40,7 +43,9 @@ public class Alacrity extends Applet implements Runnable, MouseListener, MouseMo
 	public int eX2, eY2;
 	public static int spottedPlayerFirePower = 0; //for the ai to know the power of player
 	public long shotTime = System.currentTimeMillis();
-	public Polygon changePlace;
+	
+	public Path2D changePlace;
+	//public Polygon changePlace;
 //+
 	public int fcX, fcY;
 	public int temp_fcX, temp_fcY;
@@ -101,18 +106,6 @@ public class Alacrity extends Applet implements Runnable, MouseListener, MouseMo
 	
 	public void init() //has Ships creations and stuff
 	{
-
-		////////////////////////////////
-
-		//ship bi = new ship(100,100,12,20, "Frigate", "The Oblivinator", true);
-
-		//player1Ships.add(bi);
-
-		//bi = new ship(200,100,12,20, "Frigate", "The Oblivinator", true);
-
-		//player1Ships.add(bi);
-
-		///////////////////////////////
 		selectedFleet = new Fleet();
 		temp_fleet2 = new Fleet();
 		selectedFleet.selected = true;
@@ -137,8 +130,11 @@ public class Alacrity extends Applet implements Runnable, MouseListener, MouseMo
 		setBackground(Color.black);
 		offscreen = createImage(gameSizeX,gameSizeY);
 		backGround = createImage(gameSizeX,gameSizeY);
+		offScreen2 = new BufferedImage(gameSizeX,gameSizeY,BufferedImage.TYPE_INT_ARGB);
 
         bufferGraphics = offscreen.getGraphics();
+        //g2 = (Graphics2D) g;
+        g2 = offScreen2.createGraphics();
         bufferGraphics2 = backGround.getGraphics();
         drawStars();
         
@@ -947,7 +943,7 @@ public class Alacrity extends Applet implements Runnable, MouseListener, MouseMo
 	
 	public void drawClock(Graphics g)
 	{
-		bufferGraphics.drawString("CURRENT TIME: " + time/10, 800 + dx, 50 + dy);
+		g2.drawString("CURRENT TIME: " + time/10, 800 + dx, 50 + dy);
 		time++;
 	}
 
@@ -961,23 +957,24 @@ public class Alacrity extends Applet implements Runnable, MouseListener, MouseMo
 				{
 					if(player1Fleets.get(u).get(i).colorBlue)
 					{
-						changePlace = player1Fleets.get(u).get(i).shipShape; //arraylist of fleets
+						//changePlace = player1Fleets.get(u).get(i).shipShape; //arraylist of fleets
+						changePlace = player1Fleets.get(u).get(i).shipShapeDouble;
 						
 						if(drawRings)//debugg for vision
 						{
-							bufferGraphics.setColor(Color.white);
-							bufferGraphics.drawOval(player1Fleets.get(u).get(i).ox-player1Fleets.get(u).get(i).sightRange, player1Fleets.get(u).get(i).oy-player1Fleets.get(u).get(i).sightRange, player1Fleets.get(u).get(i).sightRange*2, player1Fleets.get(u).get(i).sightRange*2);
+							g2.setColor(Color.white);
+							g2.drawOval((int)player1Fleets.get(u).get(i).ox-player1Fleets.get(u).get(i).sightRange, (int)player1Fleets.get(u).get(i).oy-player1Fleets.get(u).get(i).sightRange, player1Fleets.get(u).get(i).sightRange*2, player1Fleets.get(u).get(i).sightRange*2);
 						
-							bufferGraphics.setColor(Color.red);
-							bufferGraphics.drawOval(player1Fleets.get(u).get(i).ox-player1Fleets.get(u).get(i).fireRange, player1Fleets.get(u).get(i).oy-player1Fleets.get(u).get(i).fireRange, player1Fleets.get(u).get(i).fireRange*2, player1Fleets.get(u).get(i).fireRange*2);
+							g2.setColor(Color.red);
+							g2.drawOval((int)player1Fleets.get(u).get(i).ox-player1Fleets.get(u).get(i).fireRange, (int)player1Fleets.get(u).get(i).oy-player1Fleets.get(u).get(i).fireRange, player1Fleets.get(u).get(i).fireRange*2, player1Fleets.get(u).get(i).fireRange*2);
 						}
 						///////////////////
 						
-						bufferGraphics.setColor(Color.blue);
-						bufferGraphics.fillPolygon(changePlace);
+						g2.setColor(Color.blue);
+						g2.fill(changePlace);
 
-						bufferGraphics.setColor(Color.black);
-						bufferGraphics.drawPolygon(changePlace);
+						g2.setColor(Color.black);
+						g2.draw(changePlace);
 					}
 				}
 			}
@@ -994,23 +991,24 @@ public class Alacrity extends Applet implements Runnable, MouseListener, MouseMo
 				{
 					if(player1Fleets.get(u).get(i).colorBlue)
 					{
-						changePlace = player1Fleets.get(u).get(i).shipShape;
+						//changePlace = player1Fleets.get(u).get(i).shipShape;
+						changePlace = player1Fleets.get(u).get(i).shipShapeDouble;
 						
 						if(drawRings)//debugg for vision
 						{
-							bufferGraphics.setColor(Color.white);
-							bufferGraphics.drawOval(player1Fleets.get(u).get(i).ox-player1Fleets.get(u).get(i).sightRange, player1Fleets.get(u).get(i).oy-player1Fleets.get(u).get(i).sightRange, player1Fleets.get(u).get(i).sightRange*2, player1Fleets.get(u).get(i).sightRange*2);
+							g2.setColor(Color.white);
+							g2.drawOval((int)player1Fleets.get(u).get(i).ox-player1Fleets.get(u).get(i).sightRange, (int)player1Fleets.get(u).get(i).oy-player1Fleets.get(u).get(i).sightRange, player1Fleets.get(u).get(i).sightRange*2, player1Fleets.get(u).get(i).sightRange*2);
 						
-							bufferGraphics.setColor(Color.red);
-							bufferGraphics.drawOval(player1Fleets.get(u).get(i).ox-player1Fleets.get(u).get(i).fireRange, player1Fleets.get(u).get(i).oy-player1Fleets.get(u).get(i).fireRange, player1Fleets.get(u).get(i).fireRange*2, player1Fleets.get(u).get(i).fireRange*2);
+							g2.setColor(Color.red);
+							g2.drawOval((int)player1Fleets.get(u).get(i).ox-player1Fleets.get(u).get(i).fireRange, (int)player1Fleets.get(u).get(i).oy-player1Fleets.get(u).get(i).fireRange, player1Fleets.get(u).get(i).fireRange*2, player1Fleets.get(u).get(i).fireRange*2);
 						}
 						///////////////////
 						
-						bufferGraphics.setColor(Color.blue);
-						bufferGraphics.fillPolygon(changePlace);
+						g2.setColor(Color.blue);
+						g2.fill(changePlace);
 
-						bufferGraphics.setColor(Color.white);
-						bufferGraphics.drawPolygon(changePlace);
+						g2.setColor(Color.white);
+						g2.draw(changePlace);
 					}
 				}
 			}
@@ -1023,23 +1021,23 @@ public class Alacrity extends Applet implements Runnable, MouseListener, MouseMo
 		{
 			if(player1SpottedShips.get(u).colorBlue)
 			{
-				changePlace = player1SpottedShips.get(u).shipShape; 
+				changePlace = player1SpottedShips.get(u).shipShapeDouble; 
 				
 				if(drawRings)//debugg for vision
 				{
-					bufferGraphics.setColor(Color.white);
-					bufferGraphics.drawOval(player1SpottedShips.get(u).ox-player1SpottedShips.get(u).sightRange, player1SpottedShips.get(u).oy-player1SpottedShips.get(u).sightRange, player1SpottedShips.get(u).sightRange*2, player1SpottedShips.get(u).sightRange*2);
+					g2.setColor(Color.white);
+					g2.drawOval((int)player1SpottedShips.get(u).ox-player1SpottedShips.get(u).sightRange, (int)player1SpottedShips.get(u).oy-player1SpottedShips.get(u).sightRange, player1SpottedShips.get(u).sightRange*2, player1SpottedShips.get(u).sightRange*2);
 				
-					bufferGraphics.setColor(Color.red);
-					bufferGraphics.drawOval(player1SpottedShips.get(u).ox-player1SpottedShips.get(u).fireRange, player1SpottedShips.get(u).oy-player1SpottedShips.get(u).fireRange, player1SpottedShips.get(u).fireRange*2, player1SpottedShips.get(u).fireRange*2);
+					g2.setColor(Color.red);
+					g2.drawOval((int)player1SpottedShips.get(u).ox-player1SpottedShips.get(u).fireRange, (int)player1SpottedShips.get(u).oy-player1SpottedShips.get(u).fireRange, player1SpottedShips.get(u).fireRange*2, player1SpottedShips.get(u).fireRange*2);
 				}
 				
 		////////////////////////////////////////////////////////
-				bufferGraphics.setColor(Color.pink);
-				bufferGraphics.fillPolygon(changePlace);
+				g2.setColor(Color.pink);
+				g2.fill(changePlace);
 
-				bufferGraphics.setColor(Color.black);
-				bufferGraphics.drawPolygon(changePlace);
+				g2.setColor(Color.black);
+				g2.draw(changePlace);
 			}
 		}
 	}
@@ -1049,13 +1047,13 @@ public class Alacrity extends Applet implements Runnable, MouseListener, MouseMo
 
 		if(!(fullStop) && eX!=0 && eY!=0)
 		{
-			bufferGraphics.setColor(Color.red);
-			bufferGraphics.fillRect(eX-10, eY-3, 19, 5);
-			bufferGraphics.fillRect(eX-3, eY-10, 5, 20);
+			g2.setColor(Color.red);
+			g2.fillRect(eX-10, eY-3, 19, 5);
+			g2.fillRect(eX-3, eY-10, 5, 20);
 
-			bufferGraphics.setColor(Color.black);
-			bufferGraphics.drawRect(eX-10, eY-3, 19, 5);
-			bufferGraphics.drawRect(eX-3, eY-10, 5, 20);
+			g2.setColor(Color.black);
+			g2.drawRect(eX-10, eY-3, 19, 5);
+			g2.drawRect(eX-3, eY-10, 5, 20);
 
 
 		}
@@ -1065,11 +1063,11 @@ public class Alacrity extends Applet implements Runnable, MouseListener, MouseMo
 	{
 		for(int u = 0; u<player1Fleets.size(); u++)
 		{
-			bufferGraphics.setColor(Color.red);
-			bufferGraphics.fillRect(player1Fleets.get(u).fcX, player1Fleets.get(u).fcY, 5,5);
+			g2.setColor(Color.red);
+			g2.fillRect(player1Fleets.get(u).fcX, player1Fleets.get(u).fcY, 5,5);
 
-			bufferGraphics.setColor(Color.black);
-			bufferGraphics.drawRect(player1Fleets.get(u).fcX, player1Fleets.get(u).fcY, 5,5);
+			g2.setColor(Color.black);
+			g2.drawRect(player1Fleets.get(u).fcX, player1Fleets.get(u).fcY, 5,5);
 		}
 	}
 	
@@ -1081,14 +1079,14 @@ public class Alacrity extends Applet implements Runnable, MouseListener, MouseMo
 			{
 				bi = player1Fleets.get(u).get(i);
 				
-				bufferGraphics.setColor(Color.white);
-				bufferGraphics.fillRect(bi.ox-15, bi.oy-20, 30, 5);
+				g2.setColor(Color.white);
+				g2.fillRect((int)bi.ox-15, (int)bi.oy-20, 30, 5);
 				
-				bufferGraphics.setColor(Color.blue);
-				bufferGraphics.fillRect(bi.ox-15, bi.oy-20, bi.getWidth(), 5);
+				g2.setColor(Color.blue);
+				g2.fillRect((int)bi.ox-15, (int)bi.oy-20, bi.getWidth(), 5);
 			
-				bufferGraphics.setColor(Color.red);
-				bufferGraphics.drawRect(bi.ox-15, bi.oy-20, 30, 5);
+				g2.setColor(Color.red);
+				g2.drawRect((int)bi.ox-15, (int)bi.oy-20, 30, 5);
 				
 			}
 		}	
@@ -1113,14 +1111,14 @@ public class Alacrity extends Applet implements Runnable, MouseListener, MouseMo
 		{
 			bi = player2SpottedShips.get(y);
 			
-			bufferGraphics.setColor(Color.white);
-			bufferGraphics.fillRect(bi.ox-15, bi.oy-20, 30, 5);
+			g2.setColor(Color.white);
+			g2.fillRect((int)bi.ox-15, (int)bi.oy-20, 30, 5);
 			
-			bufferGraphics.setColor(Color.green);
-			bufferGraphics.fillRect(bi.ox-15, bi.oy-20, bi.getWidth(), 5);
+			g2.setColor(Color.green);
+			g2.fillRect((int)bi.ox-15, (int)bi.oy-20, bi.getWidth(), 5);
 		
-			bufferGraphics.setColor(Color.red);
-			bufferGraphics.drawRect(bi.ox-15, bi.oy-20, 30, 5);
+			g2.setColor(Color.red);
+			g2.drawRect((int)bi.ox-15, (int)bi.oy-20, 30, 5);
 		}
 	}
 	
@@ -1133,8 +1131,8 @@ public class Alacrity extends Applet implements Runnable, MouseListener, MouseMo
 				bi = player1Fleets.get(u).get(i);
 				if(player1Fleets.get(u).get(i).hasTarget )
 				{
-					bufferGraphics.setColor(new Color(128,255,255));
-					bufferGraphics.drawLine(player1Fleets.get(u).get(i).ox, player1Fleets.get(u).get(i).oy, player1Fleets.get(u).get(i).shipTarget.ox, player1Fleets.get(u).get(i).shipTarget.oy);
+					g2.setColor(new Color(128,255,255));
+					g2.drawLine((int)player1Fleets.get(u).get(i).ox, (int)player1Fleets.get(u).get(i).oy, (int)player1Fleets.get(u).get(i).shipTarget.ox, (int)player1Fleets.get(u).get(i).shipTarget.oy);
 				}
 			}
 		}
@@ -1158,8 +1156,8 @@ public class Alacrity extends Applet implements Runnable, MouseListener, MouseMo
 		{
 			if(player2SpottedShips.get(u).hasTarget ) // 
 			{
-				bufferGraphics.setColor(new Color(255,0,0));
-				bufferGraphics.drawLine(player2SpottedShips.get(u).ox + player2SpottedShips.get(u).x3.get(2), player2SpottedShips.get(u).oy + player2SpottedShips.get(u).y3.get(2), player2SpottedShips.get(u).shipTarget.ox, player2SpottedShips.get(u).shipTarget.oy);
+				g2.setColor(new Color(255,0,0));
+				g2.drawLine((int)(player2SpottedShips.get(u).ox + player2SpottedShips.get(u).x3.get(2)), (int)(player2SpottedShips.get(u).oy + player2SpottedShips.get(u).y3.get(2)), (int)player2SpottedShips.get(u).shipTarget.ox, (int)player2SpottedShips.get(u).shipTarget.oy);
 			}
 		}
 	}
@@ -1174,12 +1172,12 @@ public class Alacrity extends Applet implements Runnable, MouseListener, MouseMo
 			{	
 				//System.out.println(player2Fleets.get(u));
 				
-				changePlace = player2Fleets.get(u).get(i).shipShape;
-				bufferGraphics.setColor(Color.red);
-				bufferGraphics.fillPolygon(changePlace);
+				changePlace = player2Fleets.get(u).get(i).shipShapeDouble;
+				g2.setColor(Color.red);
+				g2.fill(changePlace);
 
-				bufferGraphics.setColor(Color.black);
-				bufferGraphics.drawPolygon(changePlace);
+				g2.setColor(Color.black);
+				g2.draw(changePlace);
 			}
 		}
 		
@@ -1199,12 +1197,12 @@ public class Alacrity extends Applet implements Runnable, MouseListener, MouseMo
 		
 		for(int u = 0; u<player2SpottedShips.size();u++)
 		{
-			changePlace = player2SpottedShips.get(u).shipShape;
-			bufferGraphics.setColor(Color.green);
-			bufferGraphics.fillPolygon(changePlace);
+			changePlace = player2SpottedShips.get(u).shipShapeDouble;
+			g2.setColor(Color.green);
+			g2.fill(changePlace);
 
-			bufferGraphics.setColor(Color.black);
-			bufferGraphics.drawPolygon(changePlace);
+			g2.setColor(Color.black);
+			g2.draw(changePlace);
 		}
 	}
 	
@@ -1297,13 +1295,13 @@ public class Alacrity extends Applet implements Runnable, MouseListener, MouseMo
 //MAIN METHODSS
 
 	public void paint(Graphics g)
-	{ 	bufferGraphics.clearRect(0,0,gameSizeX,gameSizeY);
+	{ 	bufferGraphics.clearRect(0,0,gameSizeX,gameSizeY); g2.clearRect(0,0,gameSizeX,gameSizeY);
 //remove selector
 		//if(player1SelectedShips.size()==0)
 		//selected=false;
 		//printFleets();
 //drawReferenceStars
-		bufferGraphics.drawImage(backGround,0,0, gameSizeX,gameSizeY, 0, 0, 1590, 778, this);
+		g2.drawImage(backGround,0,0, gameSizeX,gameSizeY, 0, 0, 1590, 778, this);
 	
 //drawClock
 		drawClock(g);
@@ -1378,12 +1376,12 @@ public class Alacrity extends Applet implements Runnable, MouseListener, MouseMo
 		checkForDeadShips();
 
 //draws bufferedImage
-		bufferGraphics.setColor(Color.white);
-		bufferGraphics.drawLine(10,10,gameSizeX - 10,10);
-		bufferGraphics.drawLine(gameSizeX-10,10,gameSizeX-10,gameSizeY-10);
-		bufferGraphics.drawLine(gameSizeX-10,gameSizeY-10,10,gameSizeY-10);
-		bufferGraphics.drawLine(10,gameSizeY-10,10,10);
-		g.drawImage(offscreen,0,0, 1590,778, x, y, x+1590, y+778, this);
+		g2.setColor(Color.white);
+		g2.drawLine(10,10,gameSizeX - 10,10);
+		g2.drawLine(gameSizeX-10,10,gameSizeX-10,gameSizeY-10);
+		g2.drawLine(gameSizeX-10,gameSizeY-10,10,gameSizeY-10);
+		g2.drawLine(10,gameSizeY-10,10,10);
+		g.drawImage(offScreen2,0,0, 1590,778, x, y, x+1590, y+778, this);
 		
 	}
 
