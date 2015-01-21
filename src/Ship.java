@@ -1,7 +1,7 @@
 import java.util.*;
 //import java.io.*;
 import java.awt.*;
-import java.awt.Graphics2D.*;
+//import java.awt.Graphics2D.*;
 import java.awt.geom.*;;
 //import java.awt.geom.*;
 
@@ -113,11 +113,11 @@ public class Ship {
     	//fill arrays with ships 4 points
     	//int[] x1 = new int[4];
     	//int[] y1 = new int[4];
-    	double[] x1 = {x, x+(w/2), x, x-(w/2)};
-    	double[] y1 = {y-(h/2), y, y+(h/2), y};
+    	//double[] x1 = {x, x+(w/2), x, x-(w/2)};
+    	//double[] y1 = {y-(h/2), y, y+(h/2), y};
 
-    	double[] xx2 = {0+ox, w/2+ox, 0+ox, 0-(w/2)+ox};
-    	double[] yy2 = {0-(h/2)+oy, 0+oy, h/2+oy, 0+oy};
+    	//double[] xx2 = {0+ox, w/2+ox, 0+ox, 0-(w/2)+ox};
+    	//double[] yy2 = {0-(h/2)+oy, 0+oy, h/2+oy, 0+oy};
 
        // p0 = new Point(x1[0],y1[0]);
        // p1 = new Point(x1[1],y1[1]);
@@ -311,7 +311,7 @@ public class Ship {
  		else if(slope<=-2)
  		{
  			slope = -1;
- 		}
+ 		} 
 
 
 	/*	if(slope>=10)
@@ -411,6 +411,75 @@ public class Ship {
  		//shipShape = new Polygon(temp_x, temp_y,s);
  		createPolygon2(temp_x, temp_y);
  	}
+ 	
+ 	public void move3(int eX1, int eY1, int fcX1, int fcY1) //moves 
+ 	{
+ 		double slope = (eY1+0.0-fcY1)/(eX1+0.0-fcX1);
+ 		//double slopeDub = (eY1+0.0-fcY1)/(eX1+0.0-fcX1);
+ 		//boolean trick = false;
+ 		//System.out.println("Y COORD: " + (eY1+0.0-fcY1));
+ 		//System.out.println("X COORD: " + (eX1+0.0-fcX1));
+ 		temp_x = new double[4];
+ 		temp_y = new double[4];
+ 		dx=1.0;
+ 		dy=1.0;
+
+ 		for(int i = 0; i<4; i++)
+ 		{
+			if(eX1-fcX1 == 0) //if bottom half of slope is zero
+			{
+				if(eY1-fcY1>0)
+					temp_y[i] = (y3.get(i)+ oy + dy);
+				else
+					temp_y[i] = (y3.get(i) + oy - dy);
+			}
+			else  //if slope is positive of neg, add or subtract movespeed
+			{
+				if(slope>0)
+ 					temp_x[i] = (x3.get(i)+ox+dx);
+
+ 				else
+ 					temp_x[i] = (x3.get(i)+ox-dx);
+
+ 				temp_y[i] = (y3.get(i)+oy + ((slope * (temp_x[i]+0.0 - ox))) );
+			}
+			if(eY1-fcY1==0) // if top half of slope is zero
+			{
+				if(eX1-fcX1>0)
+					temp_x[i] = (x3.get(i) + ox + dx);
+				else
+					temp_x[i] = (x3.get(i) + ox - dx);
+			}
+			
+			
+			
+			////////////////add to real positions
+			if(eX1-fcX1==0)
+			{
+				if(eY1-fcY1>0)
+					oy = (oy + dy);
+				else
+					oy = (oy - dy);
+			}
+			else
+			{
+				if(eX1-fcX1>0)
+				{
+					ox = (ox + dx);
+					oy = Math.round(oy + ((slope) * (dx+0.0)));
+				}
+				else
+				{
+					ox = (ox - dx);
+					oy = Math.round(oy + ((slope) * (0.0-dx)));
+				}
+			}
+ 			
+ 		}
+
+ 		//shipShape = new Polygon(temp_x, temp_y,s);
+ 		createPolygon2(temp_x, temp_y);
+ 	}
 
  	public void move2(int eX1, int eY1, int fcX1, int fcY1)
  	{	
@@ -418,7 +487,7 @@ public class Ship {
  		int delta_x = fcX1 - eX1;
  		int delta_y = fcY1 - eY1;
  		double angle = Math.atan2(delta_y, delta_x);
- 		
+ 		dz = 5;
  		shipAngle = angle;
  		temp_x = new double[4];
  		temp_y = new double[4];
